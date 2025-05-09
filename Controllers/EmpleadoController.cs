@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TurnosApp.Data;
 using TurnosApp.Models;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TurnosApp.Controllers
 {
@@ -35,7 +35,21 @@ namespace TurnosApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Empleado empleado)
         {
-            // 🔴 Prueba temporal: sin validación
+            if (!ValidarCedula(empleado.Cedula))
+                ModelState.AddModelError("Cedula", "La cédula ingresada no es válida.");
+
+            if (empleado.DepartamentoId == 0)
+                ModelState.AddModelError("DepartamentoId", "Debe seleccionar un departamento.");
+
+            if (empleado.PosicionId == null || empleado.PosicionId == 0)
+                ModelState.AddModelError("PosicionId", "Debe seleccionar un cargo.");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Departamentos = _context.Departamentos.ToList();
+                return View(empleado);
+            }
+
             _context.Empleados.Add(empleado);
             await _context.SaveChangesAsync();
 
@@ -51,6 +65,14 @@ namespace TurnosApp.Controllers
                 .ToList();
 
             return Json(posiciones);
+        }
+
+        // Método auxiliar para validar la cédula
+        private bool ValidarCedula(string cedula)
+        {
+            // Aquí deberías implementar la lógica real de validación de cédula según tu país.
+            // Esta es solo una validación básica de longitud.
+            return !string.IsNullOrWhiteSpace(cedula) && cedula.Length == 11 && cedula.All(char.IsDigit);
         }
     }
 }

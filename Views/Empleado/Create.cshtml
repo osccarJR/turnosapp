@@ -6,11 +6,13 @@
     <div class="form-group">
         <label asp-for="Nombre"></label>
         <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Cedula"></label>
         <input asp-for="Cedula" class="form-control" />
+        <span asp-validation-for="Cedula" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -22,6 +24,7 @@
                 <option value="@d.Id">@d.Nombre</option>
             }
         </select>
+        <span asp-validation-for="DepartamentoId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -29,27 +32,29 @@
         <select asp-for="PosicionId" id="PosicionId" class="form-control">
             <option value="">-- Seleccione un cargo --</option>
         </select>
+        <span asp-validation-for="PosicionId" class="text-danger"></span>
     </div>
-
-    <!-- 🔴 Campos ocultos para forzar valores -->
-    <input type="hidden" name="DepartamentoId" value="1" />
-    <input type="hidden" name="PosicionId" value="1" />
 
     <button type="submit" class="btn btn-success">Guardar</button>
 </form>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $('#DepartamentoId').change(function () {
             var deptId = $(this).val();
             $('#PosicionId').empty().append('<option value="">Cargando...</option>');
-            $.get(`/Empleado/GetPosiciones?departamentoId=${deptId}`, function (data) {
-                $('#PosicionId').empty().append('<option value="">-- Seleccione un cargo --</option>');
-                data.forEach(function (p) {
-                    $('#PosicionId').append(`<option value="${p.id}">${p.nombre}</option>`);
+            if (deptId) {
+                $.get(`/Empleado/GetPosiciones?departamentoId=${deptId}`, function (data) {
+                    $('#PosicionId').empty().append('<option value="">-- Seleccione un cargo --</option>');
+                    data.forEach(function (p) {
+                        $('#PosicionId').append(`<option value="${p.id}">${p.nombre}</option>`);
+                    });
                 });
-            });
+            } else {
+                $('#PosicionId').empty().append('<option value="">-- Seleccione un cargo --</option>');
+            }
         });
     </script>
 }
