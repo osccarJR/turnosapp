@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TurnosApp.Data;
 using TurnosApp.Models;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace TurnosApp.Controllers
 {
@@ -18,7 +18,11 @@ namespace TurnosApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var empleados = await _context.Empleados.Include(e => e.Departamento).ToListAsync();
+            var empleados = await _context.Empleados
+                .Include(e => e.Departamento)
+                .Include(e => e.Posicion)
+                .ToListAsync();
+
             return View(empleados);
         }
 
@@ -32,9 +36,13 @@ namespace TurnosApp.Controllers
         public async Task<IActionResult> Create(Empleado empleado)
         {
             if (!ValidarCedula(empleado.Cedula))
-            {
                 ModelState.AddModelError("Cedula", "La cédula ingresada no es válida.");
-            }
+
+            if (empleado.DepartamentoId == 0)
+                ModelState.AddModelError("DepartamentoId", "Debe seleccionar un departamento.");
+
+            if (empleado.PosicionId == null || empleado.PosicionId == 0)
+                ModelState.AddModelError("PosicionId", "Debe seleccionar un cargo.");
 
             if (!ModelState.IsValid)
             {
@@ -42,12 +50,12 @@ namespace TurnosApp.Controllers
                 return View(empleado);
             }
 
-            _context.Add(empleado);
+            _context.Empleados.Add(empleado);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
-        // Method to validate the Cedula
         private bool ValidarCedula(string cedula)
         {
             if (cedula.Length != 10) return false;
@@ -64,12 +72,11 @@ namespace TurnosApp.Controllers
             return digitoVerificador == int.Parse(cedula[9].ToString());
         }
 
-        // New GET method to fetch the Posiciones based on the selected Departamento
         [HttpGet]
         public IActionResult GetPosiciones(int departamentoId)
         {
             var posiciones = _context.Posiciones
-                .Where(p => p.DepartamentoId == departamentoId)  // Assuming there's a DepartamentoId in Posicion
+                .Where(p => p.DepartamentoId == departamentoId)
                 .Select(p => new { p.Id, p.Nombre })
                 .ToList();
 

@@ -17,3 +17,4 @@ namespace TurnosApp.Data
         public DbSet<Posicion> Posiciones { get; set; }
     }
 }
+ 

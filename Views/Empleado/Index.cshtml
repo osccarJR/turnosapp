@@ -9,6 +9,7 @@
             <th>Nombre</th>
             <th>Cédula</th>
             <th>Departamento</th>
+            <th>Posición</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
                 <td>@emp.Nombre</td>
                 <td>@emp.Cedula</td>
                 <td>@emp.Departamento?.Nombre</td>
+                <td>@emp.Posicion?.Nombre</td>
             </tr>
         }
     </tbody>

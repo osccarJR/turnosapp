@@ -166,3 +166,4 @@ C:\Users\PC\TurnosApp\obj\Debug\net8.0\refint\TurnosApp.dll
 C:\Users\PC\TurnosApp\obj\Debug\net8.0\TurnosApp.pdb
 C:\Users\PC\TurnosApp\obj\Debug\net8.0\TurnosApp.genruntimeconfig.cache
 C:\Users\PC\TurnosApp\obj\Debug\net8.0\ref\TurnosApp.dll
+C:\Users\PC\TurnosApp\obj\Debug\net8.0\TurnosApp.sourcelink.json
