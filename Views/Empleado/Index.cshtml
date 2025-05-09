@@ -1,0 +1,24 @@
+@model List<TurnosApp.Models.Empleado>
+
+<h2>Lista de Empleados</h2>
+<a asp-action="Create" class="btn btn-primary">Nuevo Empleado</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Cédula</th>
+            <th>Departamento</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in Model)
+        {
+            <tr>
+                <td>@emp.Nombre</td>
+                <td>@emp.Cedula</td>
+                <td>@emp.Departamento?.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>
