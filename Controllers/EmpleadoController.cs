@@ -67,12 +67,12 @@ namespace TurnosApp.Controllers
             return Json(posiciones);
         }
 
-        // Método auxiliar para validar la cédula
+        // 🔧 Validación básica para cédula ecuatoriana de 10 dígitos
         private bool ValidarCedula(string cedula)
         {
-            // Aquí deberías implementar la lógica real de validación de cédula según tu país.
-            // Esta es solo una validación básica de longitud.
-            return !string.IsNullOrWhiteSpace(cedula) && cedula.Length == 11 && cedula.All(char.IsDigit);
+            return !string.IsNullOrWhiteSpace(cedula) &&
+                   cedula.Length == 10 &&
+                   cedula.All(char.IsDigit);
         }
     }
 }
