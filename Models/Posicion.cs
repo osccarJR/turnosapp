@@ -8,10 +8,9 @@ namespace TurnosApp.Models
 
         [Required]
         [Display(Name = "Nombre del Cargo o Posición")]
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
-        // Relación con Departamento
         public int DepartamentoId { get; set; }
-        public Departamento Departamento { get; set; }
+        public Departamento? Departamento { get; set; }
     }
 }

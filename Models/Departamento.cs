@@ -9,11 +9,9 @@ namespace TurnosApp.Models
 
         [Required]
         [Display(Name = "Nombre del Departamento")]
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
-        public ICollection<Empleado> Empleados { get; set; }
-
-        // Add the collection for Posiciones
-        public ICollection<Posicion> Posiciones { get; set; }
+        public ICollection<Empleado>? Empleados { get; set; }
+        public ICollection<Posicion>? Posiciones { get; set; }
     }
 }
